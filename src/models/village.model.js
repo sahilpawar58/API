@@ -27,6 +27,9 @@ const geoJsonSchema = new Schema(
             },
             NAME:{
                 type:Schema.Types.String,
+            },
+            Tehsil_NO:{
+                type:Schema.Types.Number,
             }
         }
     },

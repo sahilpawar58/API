@@ -35,4 +35,4 @@ const geoJsonSchema = new Schema(
 
 //geoJsonSchema.plugin(mongooseAggregatePaginate)
 
-export const Maharashtra = mongoose.model("Maharashtra", geoJsonSchema)
+export const Maharashtra_district = mongoose.model("Maharashtra_district", geoJsonSchema)

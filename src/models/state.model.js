@@ -24,6 +24,9 @@ const geoJsonSchema = new Schema(
             },
             DISTRICT_L:{
                 type:Schema.Types.String,
+            },
+            District_ID:{
+                type:Schema.Types.Number,
             }
         }
     },

@@ -6,6 +6,11 @@ import ApiResponse from "../utils/ApiResponse.js";
 import jsonwebtoken from "jsonwebtoken";
 import mongoose from "mongoose";
 
+const isAuthenticated = asyncHandler(async (req, res) =>{
+    return res
+    .status(200)
+    .json(new ApiResponse(200,req.user,"User is Authenticated"))
+})
 const registerUser = asyncHandler(async (req,res)=>{
     //get payload
     const {username,fullName,email,password} = req.body;
@@ -422,5 +427,6 @@ export {
     resetcoverImage,
     getUserChannelProfile,
     getUserHistory,
-    getUserData
+    getUserData,
+    isAuthenticated
 };

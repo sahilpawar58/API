@@ -18,7 +18,9 @@ app.use(express.static('public'))
 
 import geojsonRouter from './routes/geojson.route.js';
 import userRouter from './routes/user.route.js';
+import sensorRoute from './routes/sensor.route.js'
 
 app.use('/api/v1/geojson',geojsonRouter)
 app.use('/api/v1/user',userRouter)
+app.use('/api/v1/sensor',sensorRoute)
 export default app;

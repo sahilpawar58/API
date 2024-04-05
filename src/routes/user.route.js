@@ -9,7 +9,8 @@ import {
     resetavatar,
     getUserChannelProfile,
     getUserData,
-    getUserHistory } from "../controllers/user.controller.js";
+    getUserHistory,
+    isAuthenticated } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/upload.middleware.js";
 import {verifyJWT} from '../middlewares/auth.middleware.js'
 
@@ -17,6 +18,7 @@ const router = Router();
 
 
 const cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'coverImage', maxCount: 1 }])
+router.route("/verify").post(verifyJWT,isAuthenticated)
 router.route("/register").post(cpUpload,registerUser);
 router.route("/login").post(loginUser);
 router.route("/getuserdata").get(verifyJWT,getUserData)

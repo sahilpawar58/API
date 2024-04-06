@@ -51,9 +51,21 @@ const getmldata = asyncHandler(async(req,res) =>{
   });
 })
 
+const getmldatatwo = asyncHandler(async(req,res) =>{
+  fs.readFile('src/controllers/datatwo.json', (err, data) => {
+    console.log(data)
+    if (err) {
+      res.status(500).send(err);
+      return;
+    }
+    res.status(200).json(JSON.parse(data));
+  });
+})
+
 export {
     getData,
     makecomplaint,
     getComplaints,
-    getmldata
+    getmldata,
+    getmldatatwo
 }

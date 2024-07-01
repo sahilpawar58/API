@@ -4,7 +4,8 @@
   "description": "Api for dashboard of Jal jeewan frontend",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config src/index.js"
+    "dev": "nodemon -r dotenv/config src/index.js",
+    "start":"node dotenv/config src/index.js"
   },
   "author": "",
   "license": "ISC",

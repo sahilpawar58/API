@@ -7,8 +7,7 @@ const app = express();
 // app.use(cors());
 var corsOptions = {
   origin: ['http://localhost:5173', 'https://dashboard-green-gamma.vercel.app'],
-  credentials: true,
-  origin: true
+  credentials: true
 }
 // app.options('*', cors())
 app.use(cors(corsOptions));

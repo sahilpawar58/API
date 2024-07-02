@@ -11,13 +11,21 @@ import {
     getVillageInfo,
     getDistrictNames,
     getTehsilNames,
-    getVillageNames
+    getVillageNames,
+    getCountryDataByStateName,
+    getDistrictNamesByQuery,
+    getTehsilNamesByQuery,
+    getVillageNamesByQuery
 } from '../controllers/geojson.controller.js'
 
 const router = Router();
 
 
 router.get('/',getCountryData);
+router.post('/getCountryDataByStateName',getCountryDataByStateName)
+router.post('/getDistrictNamesByQuery',getDistrictNamesByQuery)
+router.post('/getTehsilNamesByQuery',getTehsilNamesByQuery)
+router.post('/getVillageNamesByQuery',getVillageNamesByQuery)
 router.get('/state',getStateData);
 router.get('/talukaCenter/:districtID',getTalukaByDistrictId)
 router.get('/taluka/:districtID/:tehsilID',getTalukaBytehsilID)

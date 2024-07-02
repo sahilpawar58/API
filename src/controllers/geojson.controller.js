@@ -24,9 +24,61 @@ const getCountryData = asyncHandler(async(req,res) => {
     return res.status(200).json(new ApiResponse(200, documents, "Fetched Successfully"));;
 })
 
+const getCountryDataByStateName = asyncHandler(async(req,res) => {
+  const {stateName} = req.body;
+  try{
+    if (!stateName) {
+      return res.status(400).json({ message: 'State name is required' });
+    }
+  
+    const districtNames = await Country.aggregate([
+      {
+        $project: {
+          State_names: "$properties.NAME_1"
+        }
+      },
+      {
+        $match: {
+          "State_names": { $regex: `^${stateName}`, $options: 'i' } // Case-insensitive search
+        }
+      },
+    ]);
+    return res.status(200).json(new ApiResponse(200, districtNames, "Fetched Successfully"));;  
+  }catch(error){
+    console.error(error);
+    return res.status(500).json(new ApiResponse(500, error.message, "Error fetching data"));
+  }
+})
+
 const getStateData = asyncHandler(async(req,res) => {
     const documents = await Maharashtra_district.find();
     return res.status(200).json(new ApiResponse(200, documents, "Fetched Successfully"));;
+})
+
+const getDistrictNamesByQuery = asyncHandler(async(req,res) => {
+  const {districtName} = req.body;
+  try{
+    if (!districtName) {
+      return res.status(400).json({ message: 'State name is required' });
+    }
+  
+    const districtNames = await Maharashtra_district.aggregate([
+      {
+        $project: {
+          State_names: "$properties.District"
+        }
+      },
+      {
+        $match: {
+          "State_names": { $regex: `^${districtName}`, $options: 'i' } // Case-insensitive search
+        }
+      },
+    ]);
+    return res.status(200).json(new ApiResponse(200, districtNames, "Fetched Successfully"));;  
+  }catch(error){
+    console.error(error);
+    return res.status(500).json(new ApiResponse(500, error.message, "Error fetching data"));
+  }
 })
 
 const getDistrictNames = asyncHandler(async (req, res) => {
@@ -60,6 +112,37 @@ const getTehsilNames = asyncHandler(async (req, res) => {
   res.json(districtNames);
 });
 
+const getTehsilNamesByQuery = asyncHandler(async(req,res) => {
+  const {tehsilName,districtName} = req.body;
+  try{
+    if (!tehsilName) {
+      return res.status(400).json({ message: 'State name is required' });
+    }
+    const tehsilList = await Maharashtra_taluka.aggregate([
+      {
+        $project: {
+          TehsilName: "$properties.TEHSIL",
+          DistrictName: { $toLower:"$properties.District"}
+        }
+      },
+      {
+        $match: {
+          "DistrictName": districtName
+        }
+      },
+      {
+        $match: {
+          "TehsilName": { $regex: `^${tehsilName}`, $options: 'i' } // Case-insensitive search
+        }
+      }
+    ]);
+    return res.status(200).json(new ApiResponse(200, tehsilList, "Fetched Successfully"));;  
+  }catch(error){
+    console.error(error);
+    return res.status(500).json(new ApiResponse(500, error.message, "Error fetching data"));
+  }
+})
+
 const getVillageNames = asyncHandler(async (req, res) => {
   const {tehsil} = req.body;
   const districtNames = await Maharashtra_village.aggregate([
@@ -90,6 +173,43 @@ const getVillageNames = asyncHandler(async (req, res) => {
 
   res.json(districtNames);
 });
+
+const getVillageNamesByQuery = asyncHandler(async(req,res) => {
+  const {tehsilName,districtName,villageName} = req.body;
+  try{
+    if (!villageName) {
+      return res.status(400).json({ message: 'State name is required' });
+    }
+    const villageList = await Maharashtra_village.aggregate([
+      {
+        $project: {
+          TehsilName: "$properties.SUB_DIST",
+          DistrictName: { $toLower:"$properties.DISTRICT"},
+          VillageName: { $toLower: "$properties.NAME" }
+        }
+      },
+      {
+        $match: {
+          "DistrictName": districtName
+        }
+      },
+      {
+        $match: {
+          "TehsilName": tehsilName
+        }
+      },
+      {
+        $match: {
+          "VillageName": { $regex: `^${villageName}`, $options: 'i' } // Case-insensitive search
+        }
+      }
+    ]);
+    return res.status(200).json(new ApiResponse(200, villageList, "Fetched Successfully"));;  
+  }catch(error){
+    console.error(error);
+    return res.status(500).json(new ApiResponse(500, error.message, "Error fetching data"));
+  }
+})
 
 
 const getTalukaByDistrictId = asyncHandler(async(req,res) => {
@@ -199,5 +319,9 @@ export {
     getDistrictNames,
     getTehsilNames,
     getVillageNames,
+    getCountryDataByStateName,
+    getDistrictNamesByQuery,
+    getTehsilNamesByQuery,
+    getVillageNamesByQuery
     
 }
